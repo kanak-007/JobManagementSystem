@@ -1,0 +1,96 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Page Not Found - JobPortal</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Job<span>Portal</span>
+    </div>
+
+    <ul class="nav-links">
+
+        <li>
+            <a href="{% url 'home' %}">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'home' %}">
+                Jobs
+            </a>
+        </li>
+
+    </ul>
+
+    <div class="nav-buttons">
+
+        {% if user.is_authenticated %}
+
+            <span class="welcome-user">
+                Hello, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}" class="login-btn">
+                Logout
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}" class="login-btn">
+                Login
+            </a>
+
+            <a href="{% url 'register' %}" class="register-btn">
+                Register
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</nav>
+
+
+<section class="custom-404-section">
+
+    <div class="custom-404-card">
+
+        <div class="custom-404-number">
+            404
+        </div>
+
+        <h1>
+            Page <span>Not Found</span>
+        </h1>
+
+        <p>
+            Sorry, the page or job you are looking for does not exist
+            or may have been removed.
+        </p>
+
+        <a href="{% url 'home' %}" class="custom-404-btn">
+            ← Back to Home
+        </a>
+
+    </div>
+
+</section>
+
+</body>
+
+</html>

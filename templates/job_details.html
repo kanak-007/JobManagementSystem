@@ -1,0 +1,199 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ job.title }} - JobPortal</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Job<span>Portal</span>
+        </div>
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="/">Home</a>
+            </li>
+
+            <li>
+                <a href="#">Jobs</a>
+            </li>
+
+            <li>
+                <a href="#">Companies</a>
+            </li>
+
+            <li>
+                <a href="#">About</a>
+            </li>
+
+        </ul>
+
+        <div class="nav-buttons">
+
+            <a href="#" class="login-btn">
+                Login
+            </a>
+
+            <a href="#" class="register-btn">
+                Register
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- JOB DETAILS -->
+
+    <section class="job-details">
+
+        <div class="job-details-container">
+
+
+            <!-- JOB HEADER -->
+
+            <div class="job-details-header">
+
+                <div class="details-company-logo">
+                    {{ job.company|first|upper }}
+                </div>
+
+                <div>
+
+                    <h1>
+                        {{ job.title }}
+                    </h1>
+
+                    <p class="details-company">
+                        {{ job.company }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- JOB INFORMATION -->
+
+            <div class="details-info">
+
+                <div>
+                    📍 {{ job.location }}
+                </div>
+
+                <div>
+                    💰 {{ job.salary }}
+                </div>
+
+                <div>
+                    💼 {{ job.job_type }}
+                </div>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="details-section">
+
+                <h2>
+                    Job Description
+                </h2>
+
+                <p>
+                    {{ job.description }}
+                </p>
+
+            </div>
+
+
+            <!-- SKILLS -->
+
+            <div class="details-section">
+
+                <h2>
+                    Required Skills
+                </h2>
+
+                <div class="details-skills">
+
+                    <span>
+                        {{ job.skills }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- POSTED DATE -->
+
+            <div class="details-section">
+
+                <h2>
+                    Posted On
+                </h2>
+
+                <p>
+                    {{ job.posted_date|date:"d M Y" }}
+                </p>
+
+            </div>
+
+
+            <!-- APPLY BUTTON -->
+
+            <div class="apply-section">
+
+        <a href="{% url 'apply_job' job.id %}" class="apply-btn">
+        Apply Now
+       </a>
+       {% if user.is_authenticated %}
+
+    <a
+        href="{% url 'save_job' job.id %}"
+        class="save-job-btn"
+    >
+        🔖 Save Job
+    </a>
+
+{% else %}
+
+    <a
+        href="{% url 'login' %}"
+        class="save-job-btn"
+    >
+        🔖 Login to Save
+    </a>
+
+{% endif %}
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</body>
+
+</html>

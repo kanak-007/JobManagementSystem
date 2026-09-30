@@ -1,0 +1,187 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Saved Jobs - JobPortal</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Job<span>Portal</span>
+        </div>
+
+        <ul class="nav-links">
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'home' %}">Jobs</a></li>
+    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+    <li><a href="{% url 'saved_jobs' %}">Saved Jobs</a></li>
+    <li><a href="{% url 'my_applications' %}">My Applications</a></li>
+</ul>
+
+        <div class="nav-buttons">
+
+            <span class="welcome-user">
+                Hello, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}" class="login-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- SAVED JOBS SECTION -->
+
+    <section class="saved-jobs-section">
+
+        <div class="saved-jobs-container">
+
+            <!-- HEADING -->
+
+            <div class="saved-jobs-heading">
+
+                <p class="section-subtitle">
+                    YOUR FAVOURITE OPPORTUNITIES
+                </p>
+
+                <h1>
+                    My <span>Saved Jobs</span>
+                </h1>
+
+                <p>
+                    View the jobs you have saved for later.
+                </p>
+
+            </div>
+
+
+            <!-- SAVED JOB LIST -->
+
+            <div class="saved-jobs-list">
+
+                {% for saved in saved_jobs %}
+
+                    <div class="saved-job-card">
+
+                        <!-- JOB HEADER -->
+
+                        <div class="saved-job-header">
+
+                            <div class="saved-company-logo">
+                                {{ saved.job.company|first|upper }}
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    {{ saved.job.title }}
+                                </h2>
+
+                                <p class="saved-company">
+                                    {{ saved.job.company }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- JOB INFORMATION -->
+
+                        <div class="saved-job-info">
+
+                            <span>
+                                📍 {{ saved.job.location }}
+                            </span>
+
+                            <span>
+                                💰 {{ saved.job.salary }}
+                            </span>
+
+                            <span>
+                                💼 {{ saved.job.job_type }}
+                            </span>
+
+                        </div>
+
+
+                        <!-- JOB ACTIONS -->
+
+                        <div class="saved-job-actions">
+
+                            <a
+                                href="{% url 'job_details' saved.job.id %}"
+                                class="saved-view-btn"
+                            >
+                                View Job
+                            </a>
+
+                            <a
+    href="{% url 'remove_saved_job' saved.job.id %}"
+    class="saved-remove-btn"
+>
+    Remove
+</a>
+                        </div>
+
+                    </div>
+
+                {% empty %}
+
+                    <!-- NO SAVED JOBS -->
+
+                    <div class="no-saved-jobs">
+
+                        <div class="no-saved-icon">
+                            🔖
+                        </div>
+
+                        <h2>
+                            No Saved Jobs Yet
+                        </h2>
+
+                        <p>
+                            You haven't saved any jobs yet.
+                            Explore available jobs and save the ones
+                            you are interested in.
+                        </p>
+
+                        <a
+                            href="{% url 'home' %}"
+                            class="browse-jobs-btn"
+                        >
+                            Browse Jobs
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</body>
+
+</html>

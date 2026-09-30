@@ -1,0 +1,487 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - JobPortal</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}">
+
+</head>
+
+
+<body>
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Job<span>Portal</span>
+        </div>
+
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="{% url 'home' %}">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'home' %}">
+                    Jobs
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'admin_dashboard' %}">
+                    Admin Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'my_applications' %}">
+                    Applications
+                </a>
+            </li>
+            <li><a href="{% url 'manage_jobs' %}">Manage Jobs</a></li>
+
+        </ul>
+
+
+        <div class="nav-buttons">
+
+            <span class="welcome-user">
+                Hello, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}"
+               class="login-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Admin Dashboard -->
+
+    <section class="admin-dashboard-section">
+
+        <div class="admin-dashboard-container">
+
+
+            <!-- Heading -->
+
+            <div class="admin-dashboard-heading">
+
+                <p class="section-subtitle">
+                    ADMIN PANEL
+                </p>
+
+                <h1>
+                    Admin <span>Dashboard</span>
+                </h1>
+
+                <p>
+                    Manage jobs and monitor application activity.
+                </p>
+
+            </div>
+
+
+            <!-- Statistics Cards -->
+
+            <div class="admin-stats-grid">
+
+
+                <!-- Total Jobs -->
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-icon">
+                        💼
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Jobs
+                        </span>
+
+                        <strong>
+                            {{ total_jobs }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Total Applications -->
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-icon">
+                        📄
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Applications
+                        </span>
+
+                        <strong>
+                            {{ total_applications }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Applied -->
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-icon">
+                        📝
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Applied
+                        </span>
+
+                        <strong>
+                            {{ applied_count }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Under Review -->
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-icon">
+                        🔍
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Under Review
+                        </span>
+
+                        <strong>
+                            {{ under_review_count }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Shortlisted -->
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-icon">
+                        ⭐
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Shortlisted
+                        </span>
+
+                        <strong>
+                            {{ shortlisted_count }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Selected -->
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-icon">
+                        ✅
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Selected
+                        </span>
+
+                        <strong>
+                            {{ selected_count }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Rejected -->
+
+                <div class="admin-stat-card">
+
+                    <div class="admin-stat-icon">
+                        ❌
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Rejected
+                        </span>
+
+                        <strong>
+                            {{ rejected_count }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+<!-- Add New Job -->
+<div class="admin-add-job-section">
+
+    <div>
+        <p class="section-subtitle">JOB MANAGEMENT</p>
+        <h2>Add a <span>New Job</span></h2>
+        <p>Create a new job opportunity for candidates.</p>
+    </div>
+
+    <a href="{% url 'add_job' %}" class="admin-add-job-btn">
+        + Add New Job
+    </a>
+
+</div>
+
+<!-- Recent Applications -->
+
+<div class="admin-applications-section">
+
+    <div class="admin-applications-heading">
+
+        <div>
+            <p class="section-subtitle">
+                APPLICATION MANAGEMENT
+            </p>
+
+            <h2>
+                Recent <span>Applications</span>
+            </h2>
+        </div>
+
+        <a href="{% url 'admin:index' %}"
+           class="admin-view-all-btn">
+            View All
+        </a>
+
+    </div>
+
+
+    <div class="admin-applications-table-wrapper">
+
+        <table class="admin-applications-table">
+
+            <thead>
+
+                <tr>
+                    <th>Applicant</th>
+                    <th>Job</th>
+                    <th>Company</th>
+                    <th>Status</th>
+                    <th>Applied Date</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for application in recent_applications %}
+
+                <tr>
+
+                    <td>
+                        <strong>
+                            {{ application.applicant_name }}
+                        </strong>
+                    </td>
+
+                    <td>
+                        {{ application.job.title }}
+                    </td>
+
+                    <td>
+                        {{ application.job.company }}
+                    </td>
+
+                    <td>
+
+                        <span class="admin-status-badge
+                            {% if application.status == 'Applied' %}
+                                admin-status-applied
+                            {% elif application.status == 'Under Review' %}
+                                admin-status-review
+                            {% elif application.status == 'Shortlisted' %}
+                                admin-status-shortlisted
+                            {% elif application.status == 'Rejected' %}
+                                admin-status-rejected
+                            {% elif application.status == 'Selected' %}
+                                admin-status-selected
+                            {% endif %}
+                        ">
+                            {{ application.status }}
+                        </span>
+
+                    </td>
+
+                    <td>
+                        {{ application.applied_date|date:"d M Y, h:i A" }}
+                    </td>
+
+                    <td>
+
+    <div class="admin-application-actions">
+
+        <a href="{% url 'admin_view_application' application.id %}"
+           class="admin-application-btn">
+            View Details
+        </a>
+
+        <form method="POST"
+              action="{% url 'update_application_status' application.id %}"
+              class="admin-status-form">
+
+            {% csrf_token %}
+
+            <select name="status" class="admin-status-select">
+
+                <option value="Applied"
+                    {% if application.status == 'Applied' %}selected{% endif %}>
+                    Applied
+                </option>
+
+                <option value="Under Review"
+                    {% if application.status == 'Under Review' %}selected{% endif %}>
+                    Under Review
+                </option>
+
+                <option value="Shortlisted"
+                    {% if application.status == 'Shortlisted' %}selected{% endif %}>
+                    Shortlisted
+                </option>
+
+                <option value="Rejected"
+                    {% if application.status == 'Rejected' %}selected{% endif %}>
+                    Rejected
+                </option>
+
+                <option value="Selected"
+                    {% if application.status == 'Selected' %}selected{% endif %}>
+                    Selected
+                </option>
+
+            </select>
+
+            <button type="submit" class="admin-status-update-btn">
+                Update
+            </button>
+
+        </form>
+
+    </div>
+
+</td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="6"
+                        class="admin-no-applications">
+
+                        No applications found.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+            <!-- Quick Actions -->
+
+            <div class="admin-quick-actions">
+
+                <h2>
+                    Quick Actions
+                </h2>
+
+                <div class="admin-action-buttons">
+
+                    <a href="{% url 'admin:index' %}"
+                       class="admin-action-btn">
+                        Open Django Admin
+                    </a>
+
+                    <a href="{% url 'home' %}"
+                       class="admin-action-btn secondary">
+                        View Jobs
+                    </a>
+                    <a href="{% url 'manage_jobs' %}" class="admin-quick-btn">
+    Manage Jobs
+</a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</body>
+
+</html>

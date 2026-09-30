@@ -1,0 +1,267 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Job - JobPortal</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Job<span>Portal</span>
+    </div>
+
+    <ul class="nav-links">
+
+        <li>
+            <a href="{% url 'home' %}">Home</a>
+        </li>
+
+        <li>
+            <a href="{% url 'home' %}">Jobs</a>
+        </li>
+
+        <li>
+            <a href="{% url 'admin_dashboard' %}">
+                Admin Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'manage_jobs' %}">
+                Manage Jobs
+            </a>
+        </li>
+
+    </ul>
+
+    <div class="nav-buttons">
+
+        <span class="welcome-user">
+            Hello, {{ user.username }}
+        </span>
+
+        <a href="{% url 'logout' %}" class="login-btn">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<section class="edit-job-section">
+
+    <div class="edit-job-container">
+
+        <div class="edit-job-heading">
+
+            <p class="section-subtitle">
+                ADMIN PANEL
+            </p>
+
+            <h1>
+                Edit <span>Job</span>
+            </h1>
+
+            <p>
+                Update the details of this job opportunity.
+            </p>
+
+        </div>
+
+
+        <div class="edit-job-card">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="title">
+                            Job Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            value="{{ job.title }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="company">
+                            Company
+                        </label>
+
+                        <input
+                            type="text"
+                            id="company"
+                            name="company"
+                            value="{{ job.company }}"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="location">
+                            Location
+                        </label>
+
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            value="{{ job.location }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="job_type">
+                            Job Type
+                        </label>
+
+                        <select
+                            id="job_type"
+                            name="job_type"
+                            required
+                        >
+
+                            <option value="Full Time"
+                                {% if job.job_type == 'Full Time' %}selected{% endif %}>
+                                Full Time
+                            </option>
+
+                            <option value="Part Time"
+                                {% if job.job_type == 'Part Time' %}selected{% endif %}>
+                                Part Time
+                            </option>
+
+                            <option value="Internship"
+                                {% if job.job_type == 'Internship' %}selected{% endif %}>
+                                Internship
+                            </option>
+
+                            <option value="Contract"
+                                {% if job.job_type == 'Contract' %}selected{% endif %}>
+                                Contract
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="salary">
+                            Salary
+                        </label>
+
+                        <input
+                            type="text"
+                            id="salary"
+                            name="salary"
+                            value="{{ job.salary }}"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="skills">
+                            Required Skills
+                        </label>
+
+                        <input
+                            type="text"
+                            id="skills"
+                            name="skills"
+                            value="{{ job.skills }}"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="description">
+                        Job Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="7"
+                        required
+                    >{{ job.description }}</textarea>
+
+                </div>
+
+
+                <div class="edit-job-actions">
+
+                    <a
+                        href="{% url 'manage_jobs' %}"
+                        class="cancel-edit-btn"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="update-job-btn"
+                    >
+                        Update Job
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+
+</html>

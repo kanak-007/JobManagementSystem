@@ -1,0 +1,218 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - JobPortal</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Job<span>Portal</span>
+        </div>
+
+        <ul class="nav-links">
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'home' %}">Jobs</a></li>
+    <li><a href="{% url 'saved_jobs' %}">Saved Jobs</a></li>
+    <li><a href="{% url 'my_applications' %}">My Applications</a></li>
+</ul>
+
+        <div class="nav-buttons">
+
+            <span class="welcome-user">
+                Hello, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}" class="login-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- DASHBOARD -->
+
+    <section class="dashboard-section">
+
+        <div class="dashboard-container">
+
+
+            <!-- DASHBOARD HEADING -->
+
+            <div class="dashboard-heading">
+
+                <p class="section-subtitle">
+                    YOUR JOB PORTAL
+                </p>
+
+                <h1>
+                    Welcome, <span>{{ user.username }}</span> 👋
+                </h1>
+
+                <p>
+                    Manage your saved jobs and job applications
+                    from one place.
+                </p>
+
+            </div>
+
+
+            <!-- DASHBOARD CARDS -->
+
+            <div class="dashboard-cards">
+
+
+                <!-- SAVED JOBS -->
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-icon">
+                        🔖
+                    </div>
+
+                    <div class="dashboard-card-content">
+
+                        <h2>
+                            {{ saved_jobs_count }}
+                        </h2>
+
+                        <p>
+                            Saved Jobs
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="{% url 'saved_jobs' %}"
+                        class="dashboard-card-btn"
+                    >
+                        View Saved Jobs
+                    </a>
+
+                </div>
+
+
+                <!-- APPLICATIONS -->
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-icon">
+                        📄
+                    </div>
+
+                    <div class="dashboard-card-content">
+
+                        <h2>
+                            {{ applications_count }}
+                        </h2>
+
+                        <p>
+                            Applications
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="{% url 'my_applications' %}"
+                        class="dashboard-card-btn"
+                    >
+                        View Applications
+                    </a>
+
+                </div>
+
+
+                <!-- AVAILABLE JOBS -->
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-icon">
+                        💼
+                    </div>
+
+                    <div class="dashboard-card-content">
+
+                        <h2>
+                            {{ total_jobs_count }}
+                        </h2>
+
+                        <p>
+                            Available Jobs
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="{% url 'home' %}"
+                        class="dashboard-card-btn"
+                    >
+                        Browse Jobs
+                    </a>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="dashboard-actions">
+
+                <h2>
+                    Quick Actions
+                </h2>
+
+                <div class="quick-action-buttons">
+
+                    <a
+                        href="{% url 'home' %}"
+                        class="quick-action-btn"
+                    >
+                        🔍 Search Jobs
+                    </a>
+
+                    <a
+                        href="{% url 'saved_jobs' %}"
+                        class="quick-action-btn"
+                    >
+                        🔖 Saved Jobs
+                    </a>
+
+                    <a
+                        href="{% url 'my_applications' %}"
+                        class="quick-action-btn"
+                    >
+                        📄 My Applications
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</body>
+
+</html>

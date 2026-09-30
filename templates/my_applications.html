@@ -1,0 +1,210 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Applications - JobPortal</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Job<span>Portal</span>
+        </div>
+
+        <ul class="nav-links">
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'home' %}">Jobs</a></li>
+    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+    <li><a href="{% url 'saved_jobs' %}">Saved Jobs</a></li>
+    <li><a href="{% url 'my_applications' %}">My Applications</a></li>
+</ul>
+
+        <div class="nav-buttons">
+
+            <span class="welcome-user">
+                Hello, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}" class="login-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- MY APPLICATIONS -->
+
+    <section class="my-applications-section">
+
+        <div class="my-applications-container">
+
+            <!-- HEADING -->
+
+            <div class="my-applications-heading">
+
+                <p class="section-subtitle">
+                    YOUR JOB APPLICATIONS
+                </p>
+
+                <h1>
+                    My <span>Applications</span>
+                </h1>
+
+                <p>
+                    Track the jobs you have applied for.
+                </p>
+
+            </div>
+
+
+            <!-- APPLICATION LIST -->
+
+            <div class="applications-list">
+
+                {% for application in applications %}
+
+                    <div class="application-card">
+
+                        <!-- APPLICATION HEADER -->
+
+                        <div class="application-card-header">
+
+                            <div class="application-company-logo">
+                                {{ application.job.company|first|upper }}
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    {{ application.job.title }}
+                                </h2>
+
+                                <p class="application-company">
+                                    {{ application.job.company }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- APPLICATION INFORMATION -->
+
+                        <div class="application-info">
+
+                            <span>
+                                📍 {{ application.job.location }}
+                            </span>
+
+                            <span>
+                                💼 {{ application.job.job_type }}
+                            </span>
+
+                            <span>
+                                📅 Applied on
+                                {{ application.applied_date|date:"d M Y" }}
+                            </span>
+
+                        </div>
+
+
+                        <!-- APPLICATION STATUS -->
+
+                        <div class="application-status">
+
+                            <span class="status-label">
+                                Application Status
+                            </span>
+
+                           <span class="status-badge
+    {% if application.status == 'Applied' %}
+        status-applied
+    {% elif application.status == 'Under Review' %}
+        status-under-review
+    {% elif application.status == 'Shortlisted' %}
+        status-shortlisted
+    {% elif application.status == 'Rejected' %}
+        status-rejected
+    {% elif application.status == 'Selected' %}
+        status-selected
+    {% endif %}
+">
+    {{ application.status }}
+</span>
+                        </div>
+
+
+                        <!-- ACTION -->
+
+                        <div class="application-actions">
+
+                            <a
+                            href="{% url 'job_details' application.job.id %}"
+                                class="application-view-btn"
+                            >
+                                View Job
+                            </a>
+                            <a href="{% url 'view_application' application.id %}"
+                            class="application-details-btn">
+                         View Application
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% empty %}
+
+                    <!-- NO APPLICATIONS -->
+
+                    <div class="no-applications">
+
+                        <div class="no-application-icon">
+                            📄
+                        </div>
+
+                        <h2>
+                            No Applications Yet
+                        </h2>
+
+                        <p>
+                            You haven't applied for any jobs yet.
+                            Explore available jobs and submit your first application.
+                        </p>
+
+                        <a
+                            href="{% url 'home' %}"
+                            class="browse-applications-btn"
+                        >
+                            Browse Jobs
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+</body>
+
+</html>

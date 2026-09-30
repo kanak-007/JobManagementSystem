@@ -1,0 +1,471 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Application Details - JobPortal</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Job<span>Portal</span>
+        </div>
+
+        <ul class="nav-links">
+            <li>
+                <a href="{% url 'home' %}">Home</a>
+            </li>
+
+            <li>
+                <a href="{% url 'home' %}">Jobs</a>
+            </li>
+
+            <li>
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+            </li>
+
+            <li>
+                <a href="{% url 'saved_jobs' %}">Saved Jobs</a>
+            </li>
+
+            <li>
+                <a href="{% url 'my_applications' %}">
+                    My Applications
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-buttons">
+
+            <span class="welcome-user">
+                Hello, {{ user.username }}
+            </span>
+
+            <a href="{% url 'logout' %}" class="login-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Application Details -->
+
+    <section class="application-details-section">
+
+        <div class="application-details-container">
+
+            <div class="application-details-heading">
+
+                <p class="section-subtitle">
+                    APPLICATION INFORMATION
+                </p>
+
+                <h1>
+                    Application <span>Details</span>
+                </h1>
+
+                <p>
+                    View the details of your job application.
+                </p>
+
+            </div>
+
+
+            <div class="application-details-card">
+
+                <!-- Job Information -->
+
+                <div class="application-details-header">
+
+                    <div class="application-company-logo">
+                        {{ application.job.company|slice:":1"|upper }}
+                    </div>
+
+                    <div>
+                        <h2>
+                            {{ application.job.title }}
+                        </h2>
+
+                        <p>
+                            {{ application.job.company }}
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- Job Details -->
+
+                <div class="application-details-grid">
+
+                    <div class="application-detail-item">
+
+                        <span>📍 Location</span>
+
+                        <strong>
+                            {{ application.job.location }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="application-detail-item">
+
+                        <span>💼 Job Type</span>
+
+                        <strong>
+                            {{ application.job.job_type }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="application-detail-item">
+
+                        <span>💰 Salary</span>
+
+                        <strong>
+                            {% if application.job.salary %}
+                                {{ application.job.salary }}
+                            {% else %}
+                                Not specified
+                            {% endif %}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="application-detail-item">
+
+                        <span>📅 Applied Date</span>
+
+                        <strong>
+                            {{ application.applied_date|date:"d M Y, h:i A" }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Application Status -->
+
+                <div class="application-status-section">
+
+                    <h3>
+                        Application Status
+                    </h3>
+
+                    <span class="status-badge
+                        {% if application.status == 'Applied' %}
+                            status-applied
+                        {% elif application.status == 'Under Review' %}
+                            status-under-review
+                        {% elif application.status == 'Shortlisted' %}
+                            status-shortlisted
+                        {% elif application.status == 'Rejected' %}
+                            status-rejected
+                        {% elif application.status == 'Selected' %}
+                            status-selected
+                        {% endif %}
+                    ">
+                        {{ application.status }}
+                    </span>
+
+                </div>
+
+               <!-- Application Progress Tracker -->
+
+<div class="application-progress-section">
+
+    <h3>
+        Application Progress
+    </h3>
+
+    {% if application.status == 'Rejected' %}
+
+        <div class="rejected-progress">
+
+            <div class="rejected-step">
+                <div class="rejected-circle">
+                    ✓
+                </div>
+
+                <span>
+                    Applied
+                </span>
+            </div>
+
+            <div class="rejected-line"></div>
+
+            <div class="rejected-step">
+                <div class="rejected-circle">
+                    ✓
+                </div>
+
+                <span>
+                    Under Review
+                </span>
+            </div>
+
+            <div class="rejected-line"></div>
+
+            <div class="rejected-step">
+                <div class="rejected-circle">
+                    ✕
+                </div>
+
+                <span>
+                    Rejected
+                </span>
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="application-progress">
+
+            <div class="progress-step
+                {% if application.status == 'Applied' or application.status == 'Under Review' or application.status == 'Shortlisted' or application.status == 'Selected' %}
+                    completed
+                {% endif %}
+            ">
+
+                <div class="progress-circle">
+                    ✓
+                </div>
+
+                <span>
+                    Applied
+                </span>
+
+            </div>
+
+
+            <div class="progress-line
+                {% if application.status == 'Under Review' or application.status == 'Shortlisted' or application.status == 'Selected' %}
+                    completed
+                {% endif %}
+            "></div>
+
+
+            <div class="progress-step
+                {% if application.status == 'Under Review' or application.status == 'Shortlisted' or application.status == 'Selected' %}
+                    completed
+                {% endif %}
+            ">
+
+                <div class="progress-circle">
+
+                    {% if application.status == 'Applied' %}
+                        2
+                    {% else %}
+                        ✓
+                    {% endif %}
+
+                </div>
+
+                <span>
+                    Under Review
+                </span>
+
+            </div>
+
+
+            <div class="progress-line
+                {% if application.status == 'Shortlisted' or application.status == 'Selected' %}
+                    completed
+                {% endif %}
+            "></div>
+
+
+            <div class="progress-step
+                {% if application.status == 'Shortlisted' or application.status == 'Selected' %}
+                    completed
+                {% endif %}
+            ">
+
+                <div class="progress-circle">
+
+                    {% if application.status == 'Shortlisted' or application.status == 'Selected' %}
+                        ✓
+                    {% else %}
+                        3
+                    {% endif %}
+
+                </div>
+
+                <span>
+                    Shortlisted
+                </span>
+
+            </div>
+
+
+            <div class="progress-line
+                {% if application.status == 'Selected' %}
+                    completed
+                {% endif %}
+            "></div>
+
+
+            <div class="progress-step
+                {% if application.status == 'Selected' %}
+                    completed
+                {% endif %}
+            ">
+
+                <div class="progress-circle">
+
+                    {% if application.status == 'Selected' %}
+                        ✓
+                    {% else %}
+                        4
+                    {% endif %}
+
+                </div>
+
+                <span>
+                    Selected
+                </span>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+                <!-- Applicant Information -->
+
+                <div class="applicant-information">
+
+                    <h3>
+                        Applicant Information
+                    </h3>
+
+                    <div class="applicant-info-grid">
+
+                        <div>
+                            <span>Name</span>
+                            <strong>
+                                {{ application.applicant_name }}
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Email</span>
+                            <strong>
+                                {{ application.email }}
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Phone</span>
+                            <strong>
+                                {{ application.phone }}
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+<!-- Resume Information -->
+
+<div class="application-resume-section">
+
+    <h3>
+        Resume
+    </h3>
+
+    {% if application.resume %}
+
+        <div class="resume-box">
+
+            <div class="resume-info">
+
+                <div class="resume-icon">
+                    📄
+                </div>
+
+                <div>
+                    <strong>
+                        Resume Uploaded
+                    </strong>
+
+                    <p>
+                        Your resume is attached to this application.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="resume-actions">
+
+                <a href="{{ application.resume.url }}"
+                   target="_blank"
+                   class="resume-view-btn">
+                    View Resume
+                </a>
+
+                <a href="{{ application.resume.url }}"
+                   download
+                   class="resume-download-btn">
+                    Download Resume
+                </a>
+
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="no-resume-box">
+            No resume was uploaded for this application.
+        </div>
+
+    {% endif %}
+
+</div>
+
+                <!-- Actions -->
+
+                <div class="application-details-actions">
+
+                    <a href="{% url 'my_applications' %}"
+                       class="application-back-btn">
+                        ← Back to Applications
+                    </a>
+
+                    <a href="{% url 'job_details' application.job.id %}"
+                       class="application-job-btn">
+                        View Job
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</body>
+
+</html>

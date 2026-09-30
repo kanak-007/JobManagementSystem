@@ -1,0 +1,282 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Application Details - JobPortal</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Job<span>Portal</span>
+    </div>
+
+    <ul class="nav-links">
+        <li>
+            <a href="{% url 'home' %}">Home</a>
+        </li>
+
+        <li>
+            <a href="{% url 'admin_dashboard' %}">
+                Admin Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'manage_jobs' %}">
+                Manage Jobs
+            </a>
+        </li>
+    </ul>
+
+    <div class="nav-buttons">
+
+        <span class="welcome-user">
+            Hello, {{ user.username }}
+        </span>
+
+        <a href="{% url 'logout' %}" class="login-btn">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<section class="admin-application-details-section">
+
+    <div class="admin-application-details-container">
+
+        <div class="admin-application-details-heading">
+
+            <p class="section-subtitle">
+                ADMIN PANEL
+            </p>
+
+            <h1>
+                Application <span>Details</span>
+            </h1>
+
+            <p>
+                View complete information about this job application.
+            </p>
+
+        </div>
+
+
+        <div class="admin-application-details-card">
+
+            <!-- Applicant Information -->
+
+            <div class="admin-application-block">
+
+                <h2>Applicant Information</h2>
+
+                <div class="admin-application-grid">
+
+                    <div class="admin-detail-item">
+                        <span>Applicant Name</span>
+                        <strong>
+                            {{ application.applicant_name }}
+                        </strong>
+                    </div>
+
+                    <div class="admin-detail-item">
+                        <span>Email</span>
+                        <strong>
+                            {{ application.email }}
+                        </strong>
+                    </div>
+
+                    <div class="admin-detail-item">
+                        <span>Phone</span>
+                        <strong>
+                            {{ application.phone }}
+                        </strong>
+                    </div>
+
+                    <div class="admin-detail-item">
+                        <span>Applied Date</span>
+                        <strong>
+                            {{ application.applied_date|date:"d M Y, h:i A" }}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Job Information -->
+
+            <div class="admin-application-block">
+
+                <h2>Job Information</h2>
+
+                <div class="admin-application-grid">
+
+                    <div class="admin-detail-item">
+                        <span>Job Title</span>
+                        <strong>
+                            {{ application.job.title }}
+                        </strong>
+                    </div>
+
+                    <div class="admin-detail-item">
+                        <span>Company</span>
+                        <strong>
+                            {{ application.job.company }}
+                        </strong>
+                    </div>
+
+                    <div class="admin-detail-item">
+                        <span>Location</span>
+                        <strong>
+                            {{ application.job.location }}
+                        </strong>
+                    </div>
+
+                    <div class="admin-detail-item">
+                        <span>Job Type</span>
+                        <strong>
+                            {{ application.job.job_type }}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Application Status -->
+
+            <div class="admin-application-block">
+
+                <h2>Application Status</h2>
+
+                <form
+                    method="POST"
+                    action="{% url 'update_application_status' application.id %}"
+                    class="admin-detail-status-form"
+                >
+
+                    {% csrf_token %}
+
+                    <select name="status">
+
+                        <option value="Applied"
+                            {% if application.status == 'Applied' %}
+                                selected
+                            {% endif %}
+                        >
+                            Applied
+                        </option>
+
+                        <option value="Under Review"
+                            {% if application.status == 'Under Review' %}
+                                selected
+                            {% endif %}
+                        >
+                            Under Review
+                        </option>
+
+                        <option value="Shortlisted"
+                            {% if application.status == 'Shortlisted' %}
+                                selected
+                            {% endif %}
+                        >
+                            Shortlisted
+                        </option>
+
+                        <option value="Rejected"
+                            {% if application.status == 'Rejected' %}
+                                selected
+                            {% endif %}
+                        >
+                            Rejected
+                        </option>
+
+                        <option value="Selected"
+                            {% if application.status == 'Selected' %}
+                                selected
+                            {% endif %}
+                        >
+                            Selected
+                        </option>
+
+                    </select>
+
+                    <button type="submit">
+                        Update Status
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- Resume -->
+
+            <div class="admin-application-block">
+
+                <h2>Resume</h2>
+
+                {% if application.resume %}
+
+                    <a
+                        href="{{ application.resume.url }}"
+                        target="_blank"
+                        class="admin-resume-btn"
+                    >
+                        View Resume
+                    </a>
+
+                    <a
+                        href="{{ application.resume.url }}"
+                        download
+                        class="admin-resume-download-btn"
+                    >
+                        Download Resume
+                    </a>
+
+                {% else %}
+
+                    <p class="admin-no-resume">
+                        No resume uploaded.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Back Button -->
+
+            <div class="admin-application-back">
+
+                <a
+                    href="{% url 'admin_dashboard' %}"
+                    class="admin-back-btn"
+                >
+                    ← Back to Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

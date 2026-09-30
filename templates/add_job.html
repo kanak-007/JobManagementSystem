@@ -1,0 +1,258 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Job - JobPortal</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Job<span>Portal</span>
+    </div>
+
+    <ul class="nav-links">
+        <li>
+            <a href="{% url 'home' %}">Home</a>
+        </li>
+
+        <li>
+            <a href="{% url 'home' %}">Jobs</a>
+        </li>
+
+        <li>
+            <a href="{% url 'admin_dashboard' %}">
+                Admin Dashboard
+            </a>
+        </li>
+    </ul>
+
+    <div class="nav-buttons">
+
+        <span class="welcome-user">
+            Hello, {{ user.username }}
+        </span>
+
+        <a href="{% url 'logout' %}" class="login-btn">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<section class="add-job-section">
+
+    <div class="add-job-container">
+
+        <div class="add-job-heading">
+
+            <p class="section-subtitle">
+                ADMIN PANEL
+            </p>
+
+            <h1>
+                Add <span>New Job</span>
+            </h1>
+
+            <p>
+                Create a new job opportunity for candidates.
+            </p>
+
+        </div>
+
+
+        <div class="add-job-card">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="title">
+                            Job Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            placeholder="e.g. Python Developer"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="company">
+                            Company
+                        </label>
+
+                        <input
+                            type="text"
+                            id="company"
+                            name="company"
+                            placeholder="e.g. ABC Technologies"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="location">
+                            Location
+                        </label>
+
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            placeholder="e.g. Pune"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="job_type">
+                            Job Type
+                        </label>
+
+                        <select
+                            id="job_type"
+                            name="job_type"
+                            required
+                        >
+
+                            <option value="">
+                                Select Job Type
+                            </option>
+
+                            <option value="Full Time">
+                                Full Time
+                            </option>
+
+                            <option value="Part Time">
+                                Part Time
+                            </option>
+
+                            <option value="Internship">
+                                Internship
+                            </option>
+
+                            <option value="Contract">
+                                Contract
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="salary">
+                            Salary
+                        </label>
+
+                        <input
+                            type="text"
+                            id="salary"
+                            name="salary"
+                            placeholder="e.g. ₹5 - ₹8 LPA"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="skills">
+                            Required Skills
+                        </label>
+
+                        <input
+                            type="text"
+                            id="skills"
+                            name="skills"
+                            placeholder="e.g. Python, Django, MySQL"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="description">
+                        Job Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="7"
+                        placeholder="Enter complete job description..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="add-job-actions">
+
+                    <a
+                        href="{% url 'admin_dashboard' %}"
+                        class="cancel-job-btn"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="add-job-btn"
+                    >
+                        Add Job
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

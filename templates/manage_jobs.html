@@ -1,0 +1,210 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Jobs - JobPortal</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Job<span>Portal</span>
+    </div>
+
+    <ul class="nav-links">
+
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'home' %}">Jobs</a></li>
+    <li><a href="{% url 'admin_dashboard' %}">
+                Admin Dashboard</a></li>
+
+        <li>
+            <a href="{% url 'manage_jobs' %}">
+                Manage Jobs
+            </a>
+        </li>
+
+    </ul>
+
+    <div class="nav-buttons">
+
+        <span class="welcome-user">
+            Hello, {{ user.username }}
+        </span>
+
+        <a href="{% url 'logout' %}" class="login-btn">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<section class="manage-jobs-section">
+
+    <div class="manage-jobs-container">
+
+        <div class="manage-jobs-heading">
+
+            <p class="section-subtitle">
+                ADMIN PANEL
+            </p>
+
+            <h1>
+                Manage <span>Jobs</span>
+            </h1>
+
+            <p>
+                View and manage all job opportunities.
+            </p>
+
+        </div>
+
+
+        <div class="manage-jobs-top">
+
+            <div>
+                <h2>All Jobs</h2>
+
+                <p>
+                    Total Jobs: <strong>{{ jobs|length }}</strong>
+                </p>
+            </div>
+
+            <a
+                href="{% url 'add_job' %}"
+                class="manage-add-job-btn"
+            >
+                + Add New Job
+            </a>
+
+        </div>
+
+
+        <div class="manage-jobs-table-wrapper">
+
+            <table class="manage-jobs-table">
+
+            <thead>
+
+            <tr>
+
+            <th>Job Title</th>
+
+            <th>Company</th>
+
+            <th>Location</th>
+
+                        <th>Job Type</th>
+
+                        <th>Salary</th>
+
+                        <th>Posted Date</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for job in jobs %}
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                {{ job.title }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            {{ job.company }}
+                        </td>
+
+                        <td>
+                            {{ job.location }}
+                        </td>
+
+                        <td>
+                            {{ job.job_type }}
+                        </td>
+
+                        <td>
+                            {{ job.salary|default:"Not specified" }}
+                        </td>
+
+                        <td>
+                            {{ job.posted_date|date:"d M Y" }}
+                        </td>
+
+                        <td>
+
+                            <div class="manage-job-actions">
+
+                                <a
+                                    href="{% url 'job_details' job.id %}"
+                                    class="manage-view-btn"
+                                >
+                                    View
+                                </a>
+
+                                <a
+    href="{% url 'edit_job' job.id %}"
+    class="manage-edit-btn"
+>
+    Edit
+</a>
+                                <a
+    href="{% url 'delete_job' job.id %}"
+    class="manage-delete-btn"
+>
+    Delete
+</a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            class="manage-no-jobs"
+                        >
+                            No jobs available.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+
+</html>

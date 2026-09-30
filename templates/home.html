@@ -1,0 +1,339 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>JobPortal</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Job<span>Portal</span>
+        </div>
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="#">Home</a>
+            </li>
+
+            <li>
+                <a href="#">Jobs</a>
+            </li>
+
+            <li>
+                <a href="#">Companies</a>
+            </li>
+
+            <li>
+                <a href="#">About</a>
+            </li>
+
+        </ul>
+
+        <div class="nav-buttons">
+
+    {% if user.is_authenticated %}
+
+    <a href="{% url 'dashboard' %}" class="dashboard-nav-btn">
+        Dashboard
+    </a>
+
+    <span class="welcome-user">
+        Hello, {{ user.username }}
+    </span>
+
+    <a href="{% url 'logout' %}" class="login-btn">
+        Logout
+    </a>
+
+{% else %}
+
+        <a href="{% url 'login' %}" class="login-btn">
+            Login
+        </a>
+
+        <a href="{% url 'register' %}" class="register-btn">
+            Register
+        </a>
+
+    {% endif %}
+
+</div>
+    </nav>
+        <!-- HERO SECTION -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <p class="small-title">
+                🚀 BUILD YOUR FUTURE
+            </p>
+
+            <h1>
+                Find Your
+                <span>Dream Job</span>
+            </h1>
+
+            <p class="hero-description">
+                Discover the right opportunities, connect with top companies,
+                and take the next step toward your career.
+            </p>
+
+            <div class="search-box">
+
+                <div class="search-field">
+                    <span>🔍</span>
+
+                    <input
+                        type="text"
+                        placeholder="Search jobs, skills or companies..."
+                    >
+                </div>
+
+                <div class="search-field location-field">
+                    <span>📍</span>
+
+                    <input
+                        type="text"
+                        placeholder="Location"
+                    >
+                </div>
+
+                <button class="search-btn">
+                    Search
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- HERO IMAGE -->
+
+        <div class="hero-image">
+
+            <img
+                src="{% static 'images/hero-job.png' %}"
+                alt="Find Your Dream Job"
+            >
+
+        </div>
+
+    </section>
+
+    <!-- JOB SEARCH -->
+
+<section class="job-search-section">
+
+    <div class="job-search-container">
+
+        <div class="search-heading">
+
+            <p class="section-subtitle">
+                FIND YOUR NEXT OPPORTUNITY
+            </p>
+
+            <h2>
+                Search <span>Jobs</span>
+            </h2>
+
+            <p>
+                Search for jobs based on title, location and job type.
+            </p>
+
+        </div>
+
+
+        <form method="GET" class="job-search-form">
+
+            <div class="search-group">
+
+                <label for="search">
+                    Job Title
+                </label>
+
+                <input
+                    type="text"
+                    id="search"
+                    name="search"
+                    placeholder="e.g. Python Developer"
+                    value="{{ search_query }}"
+                >
+
+            </div>
+
+
+            <div class="search-group">
+
+                <label for="location">
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    placeholder="e.g. Pune"
+                    value="{{ location_query }}"
+                >
+
+            </div>
+
+
+            <div class="search-group">
+
+                <label for="job_type">
+                    Job Type
+                </label>
+
+                <select id="job_type" name="job_type">
+
+                    <option value="">
+                        All Job Types
+                    </option>
+
+                    <option value="Full Time"
+                        {% if job_type_query == "Full Time" %}selected{% endif %}>
+                        Full Time
+                    </option>
+
+                    <option value="Part Time"
+                        {% if job_type_query == "Part Time" %}selected{% endif %}>
+                        Part Time
+                    </option>
+
+                    <option value="Internship"
+                        {% if job_type_query == "Internship" %}selected{% endif %}>
+                        Internship
+                    </option>
+
+                    <option value="Remote"
+                        {% if job_type_query == "Remote" %}selected{% endif %}>
+                        Remote
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button type="submit" class="job-search-btn">
+                Search Jobs
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+        <!-- LATEST JOBS SECTION -->
+
+<section class="latest-jobs">
+
+    <div class="section-heading">
+
+        <p class="section-subtitle">
+            EXPLORE OPPORTUNITIES
+        </p>
+
+        <h2>
+            Latest <span>Jobs</span>
+        </h2>
+
+        <p class="section-description">
+            Discover the latest job opportunities from growing companies.
+        </p>
+
+    </div>
+
+
+    <!-- DYNAMIC JOB CARDS -->
+
+    <div class="jobs-container">
+
+        {% for job in jobs %}
+
+            <div class="job-card">
+
+                <div class="job-top">
+
+                    <div class="company-logo">
+                        {{ job.company|first|upper }}
+                    </div>
+
+                    <span class="job-type">
+                        {{ job.job_type }}
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    {{ job.title }}
+                </h3>
+
+
+                <p class="company-name">
+                    {{ job.company }}
+                </p>
+
+
+                <div class="job-info">
+                    📍 {{ job.location }}
+                </div>
+
+
+                <div class="job-info">
+                    💰 {{ job.salary }}
+                </div>
+
+
+                <div class="job-skills">
+
+                    <span>
+                        {{ job.skills }}
+                    </span>
+
+                </div>
+
+
+                <a href="{% url 'job_details' job.id %}" class="view-job-btn">
+                 View Job
+                </a>
+            </div>
+
+
+        {% empty %}
+    <div class="no-jobs-message">
+
+        <h3>
+            No Jobs Found
+        </h3>
+
+        <p>
+            Sorry, we couldn't find any jobs matching your search.
+        </p>
+
+    </div>
+{% endfor %}
+
+    </div>
+
+</section>
+</body>
+
+</html>
